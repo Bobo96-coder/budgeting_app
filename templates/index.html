@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Budget Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header>
+        <h1>My Budget</h1>
+        <p>Take control of your money.</p>
+    </header>
+
+    <main>
+
+        <section class="summary">
+            <div class="card">
+                <h3>Monthly Income</h3>
+                <p>R{{ "%.2f"|format(budget.monthly_income) }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Budget Limit</h3>
+                <p>R{{ "%.2f"|format(budget.monthly_limit) }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Total Expenses</h3>
+                <p>R{{ "%.2f"|format(total_expenses) }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Remaining Budget</h3>
+                <p>R{{ "%.2f"|format(remaining_budget) }}</p>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Set Your Budget</h2>
+
+            <form action="/set-budget" method="POST">
+                <label>Monthly Income (R)</label>
+                <input type="number" name="monthly_income"
+                       min="0" step="0.01" required>
+
+                <label>Monthly Budget Limit (R)</label>
+                <input type="number" name="monthly_limit"
+                       min="0" step="0.01" required>
+
+                <button type="submit">Save Budget</button>
+            </form>
+        </section>
+
+        <section class="panel">
+            <h2>Add an Expense</h2>
+
+            <form action="/add-expense" method="POST">
+                <label>Description</label>
+                <input type="text" name="description" required>
+
+                <label>Amount (R)</label>
+                <input type="number" name="amount"
+                       min="0.01" step="0.01" required>
+
+                <label>Category</label>
+                <select name="category">
+                    <option>Food</option>
+                    <option>Transport</option>
+                    <option>Entertainment</option>
+                    <option>Bills</option>
+                    <option>Shopping</option>
+                    <option>Other</option>
+                </select>
+
+                <button type="submit">Add Expense</button>
+            </form>
+        </section>
+
+        <section class="panel">
+            <h2>Recent Expenses</h2>
+
+            {% if budget.expenses %}
+                {% for expense in budget.expenses %}
+                    <div class="expense">
+                        <span>
+                            {{ expense.description }}
+                            <small>{{ expense.category }}</small>
+                        </span>
+
+                        <strong>
+                            R{{ "%.2f"|format(expense.amount) }}
+                        </strong>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No expenses recorded yet.</p>
+            {% endif %}
+        </section>
+
+        <section class="panel">
+            <h2>Savings Goal</h2>
+            <p>Current goal: R{{ "%.2f"|format(budget.savings_goal) }}</p>
+
+            <form action="/set-savings-goal" method="POST">
+                <label>Target Amount (R)</label>
+                <input type="number" name="savings_goal"
+                       min="0" step="0.01" required>
+
+                <button type="submit">Set Goal</button>
+            </form>
+        </section>
+
+    </main>
+
+</body>
+</html>

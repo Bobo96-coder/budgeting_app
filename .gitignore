@@ -1,1 +1,11 @@
+# Secrets
 .env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local database (contains user data)
+budget.db

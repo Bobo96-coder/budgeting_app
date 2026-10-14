@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Log in · PocketPlan{% endblock %}
+{% block content %}
+<section class="auth-layout">
+    <div class="auth-intro">
+        <p class="eyebrow">YOUR MONEY, YOUR PLAN</p>
+        <h1>Make your money<br><span>work for you.</span></h1>
+        <p class="muted">A calmer way to track spending, set a budget, and work towards your savings goals.</p>
+        <div class="mini-stats">
+            <div><strong>Track</strong><span>Every expense</span></div>
+            <div><strong>Plan</strong><span>Every month</span></div>
+            <div><strong>Save</strong><span>For what matters</span></div>
+        </div>
+    </div>
+
+    <div class="auth-card">
+        <h2>Welcome back</h2>
+        <p class="muted">Log in to open your dashboard.</p>
+        <form method="POST" action="{{ url_for('login') }}" class="form-stack">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text" autocomplete="username" required maxlength="30" placeholder="Enter your username">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Enter your password">
+            <button class="button primary full" type="submit">Log in</button>
+        </form>
+        <p class="auth-switch">New to PocketPlan? <a href="{{ url_for('register') }}">Create an account</a></p>
+    </div>
+</section>
+{% endblock %}
